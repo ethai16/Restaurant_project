@@ -31,7 +31,7 @@ class Home extends React.Component {
     render() {
         return (
             <div>
-                {/* <Link to = "/restaurants/page=1">Find Restaurant's Around Me</Link> */}
+                <Link to = "/restaurants/page=1">Find Restaurant's Around Me</Link>
             </div>
         );
     }

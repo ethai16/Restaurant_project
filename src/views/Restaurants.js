@@ -9,7 +9,7 @@ class Restaurants extends React.Component {
 
         this.state = {
             isLoaded: false,
-            currentLocation: {lat: 29.566296599999998, lng: -95.71561969999999},
+            currentLocation: '',
             restaurants:[],
             resultsFound: 0,
             view: 'restaurants'
@@ -18,45 +18,46 @@ class Restaurants extends React.Component {
     }
 
     componentDidMount = () =>{
-        // if (navigator.geolocation) {
-        //     console.log('Geolocation is supported!');
-        //     navigator.geolocation.getCurrentPosition(position=>{
-        //         this.setState({
-        //             currentLocation: {
-        //                 lat: position.coords.latitude,
-        //                 lng: position.coords.longitude
-        //               }
-        //         })
-        //         console.log(this.state.currentLocation)
-        //     })
-        //   }
-        //   else {
-        //     console.log('Geolocation is not supported for this Browser/OS.');
-        // }
-        const config = { headers: {'user-key': 'd31eef6b1b9da6a1f098bba682d68f76'} }; 
-        fetch(`https://developers.zomato.com/api/v2.1/search?start=${parseInt(window.location.pathname.slice(18,19))*20}&count=20&sort=real_distance&order=desc&lat=${this.state.currentLocation.lat}&lon=${this.state.currentLocation.lng}`, config)
-        .then(res => res.json())
-        .then(
-            (result)=>{
-                console.log(result)
+        if (navigator.geolocation) {
+            console.log('Geolocation is supported!');
+            navigator.geolocation.getCurrentPosition(position=>{
                 this.setState({
-                    isLoaded: true,
-                    restaurants: result.restaurants,
-                    resultsFound: result.results_found
+                    currentLocation: {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                      }
                 })
-            },
-            (error) =>{
-                this.setState({
-                    isLoaded:true,
-                    error
-                })
-            }
-        )
+                console.log(this.state.currentLocation)
+            })
+          }
+          else {
+            console.log('Geolocation is not supported for this Browser/OS.');
+        }
+
+        setTimeout(()=>{
+            const config = { headers: {'user-key': 'd31eef6b1b9da6a1f098bba682d68f76'} }; 
+            fetch(`https://developers.zomato.com/api/v2.1/search?start=${parseInt(window.location.pathname.slice(21,22))*20}&count=20&sort=real_distance&order=desc&lat=${this.state.currentLocation.lat}&lon=${this.state.currentLocation.lng}`, config)
+            .then(res => res.json())
+            .then(
+                (result)=>{
+                    console.log(result)
+                    this.setState({
+                        isLoaded: true,
+                        restaurants: result.restaurants,
+                        resultsFound: result.results_found
+                    })
+                },
+                (error) =>{
+                    this.setState({
+                        isLoaded:true,
+                        error
+                    })
+                }
+            )
+        },500)
           
     }
 
-    getRestaurant = () =>{
-    }
 
     render() {
         var restaurant = this.state.restaurants.map((entry,index) =>{
@@ -64,7 +65,6 @@ class Restaurants extends React.Component {
         })
         return (
             <div>
-                <button onClick = {this.getRestaurant}>Find Restaurant's Around Me</button>
                 {restaurant}
                 <PaginationComp view = {this.state.view} resultsFound = {this.state.resultsFound} />
             </div>

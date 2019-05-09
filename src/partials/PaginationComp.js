@@ -44,6 +44,7 @@ class PaginationComp extends React.Component {
         this.setState({
             active: number
         })
+        console.log(this.state.active)
     }
 
     render() {
@@ -53,27 +54,38 @@ class PaginationComp extends React.Component {
         let linkToFirst = `/${this.props.view}/page=1`
         let linkToBack = `/${this.props.view}/page=${this.state.active}`
         let linkToNext = `/${this.props.view}/page=${this.state.active}`
-        let linkToLast = `/${this.props.view}/page=${Math.ceil(this.props.resultsFound/20)}`
+        // let linkToLast = `/${this.props.view}/page=${Math.ceil(this.props.resultsFound/20)}`
+        let linkToLast = `/${this.props.view}/page=4}`
 
 
-        if(this.state.active <= Math.ceil(this.props.resultsFound/20)-4){
-            for (let number = this.state.active; number <= (this.state.active+4); number++) {
-                let correctPageLoop = `/${this.props.view}/page=${number}`
-                items.push(
-                    <Pagination.Item href = {correctPageLoop}key={number} active={number === active} onClick = {this.makeActive.bind(this,number)}>
-                        {number}
-                    </Pagination.Item>
-                );
-            }
-        }else{
-            for (let number = this.state.active; number <= Math.ceil(this.props.resultsFound/20); number++) {
-                let correctPageLoop = `/${this.props.view}/page=${number}`
-                items.push(
-                    <Pagination.Item href = {correctPageLoop} key={number} active={number === active} onClick = {this.makeActive.bind(this,number)}>
-                        {number}
-                    </Pagination.Item>
-                );
-            }
+
+        // if(this.state.active <= Math.ceil(this.props.resultsFound/20)-4){
+        //     for (let number = this.state.active; number <= (this.state.active+4); number++) {
+        //         let correctPageLoop = `/${this.props.view}/page=${number}`
+        //         items.push(
+        //             <Pagination.Item href = {correctPageLoop}key={number} active={number === active} onClick = {this.makeActive.bind(this,number)}>
+        //                 {number}
+        //             </Pagination.Item>
+        //         );
+        //     }
+        // }else{
+        //     for (let number = this.state.active; number <= Math.ceil(this.props.resultsFound/20); number++) {
+        //         let correctPageLoop = `/${this.props.view}/page=${number}`
+        //         items.push(
+        //             <Pagination.Item href = {correctPageLoop} key={number} active={number === active} onClick = {this.makeActive.bind(this,number)}>
+        //                 {number}
+        //             </Pagination.Item>
+        //         );
+        //     }
+        // }
+
+        for (let number = 1; number <= 4; number++) {
+            let correctPageLoop = `/${this.props.view}/page=${number}`
+            items.push(
+                <Pagination.Item href = {correctPageLoop} key={number} active={number === active} onClick = {this.makeActive.bind(this,number)}>
+                    {number}
+                </Pagination.Item>
+            );
         }
 
         if(this.state.active === Math.ceil(this.props.resultsFound/20)){
