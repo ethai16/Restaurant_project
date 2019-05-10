@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux'
 import Restaurant from '../partials/Restaurant'
 import PaginationComp from '../partials/PaginationComp'
 
@@ -12,31 +13,15 @@ class Restaurants extends React.Component {
             currentLocation: '',
             restaurants:[],
             resultsFound: 0,
-            view: 'restaurants'
+            view: 'restaurants',
+            currentPage: 1
         }
         
     }
 
     componentDidMount = () =>{
-        if (navigator.geolocation) {
-            console.log('Geolocation is supported!');
-            navigator.geolocation.getCurrentPosition(position=>{
-                this.setState({
-                    currentLocation: {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                      }
-                })
-                console.log(this.state.currentLocation)
-            })
-          }
-          else {
-            console.log('Geolocation is not supported for this Browser/OS.');
-        }
-
-        setTimeout(()=>{
             const config = { headers: {'user-key': 'd31eef6b1b9da6a1f098bba682d68f76'} }; 
-            fetch(`https://developers.zomato.com/api/v2.1/search?start=${parseInt(window.location.pathname.slice(21,22))*20}&count=20&sort=real_distance&order=desc&lat=${this.state.currentLocation.lat}&lon=${this.state.currentLocation.lng}`, config)
+            fetch(`https://developers.zomato.com/api/v2.1/search?start=${parseInt(window.location.pathname.slice(21,22))*20}&count=20&sort=real_distance&order=desc&lat=${this.props.location.lat}&lon=${this.props.location.lng}`, config)
             .then(res => res.json())
             .then(
                 (result)=>{
@@ -54,9 +39,33 @@ class Restaurants extends React.Component {
                     })
                 }
             )
-        },500)
-          
     }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.match.params.pageNumber !== prevProps.match.params.pageNumber) {
+            const config = { headers: {'user-key': 'd31eef6b1b9da6a1f098bba682d68f76'} }; 
+            fetch(`https://developers.zomato.com/api/v2.1/search?start=${parseInt(window.location.pathname.slice(18,19))*20}&count=20&sort=real_distance&order=desc&lat=${this.props.location.lat}&lon=${this.props.location.lng}`, config)
+            .then(res => res.json())
+            .then(
+                (result)=>{
+                    console.log(window.location.pathname.slice(18,19))
+                    this.setState({
+                        isLoaded: true,
+                        restaurants: result.restaurants,
+                        resultsFound: result.results_found
+                    })
+                },
+                (error) =>{
+                    this.setState({
+                        isLoaded:true,
+                        error
+                    })
+                }
+            )
+            window.scrollTo(0, 0)
+        }
+      }
+          
 
 
     render() {
@@ -72,9 +81,16 @@ class Restaurants extends React.Component {
     }
 }
 
+const mapStateToProps = (state) => {
+    return {
+        location: {
+            lat: state.location.lat,
+            lng: state.location.lng
+        }
+    }
+}
 
-Restaurants.propTypes = {
-    
-};
 
-export default Restaurants
+var connectedComponent = connect(mapStateToProps,null)(Restaurants)
+
+export default connectedComponent

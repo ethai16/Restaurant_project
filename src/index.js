@@ -1,24 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {createStore} from 'redux';
+import {Provider} from 'react-redux';
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import App from './App';
 import Home from './views/Home'
 import Restaurants from './views/Restaurants'
+import locationReducer from './redux/reducers/locationReducer'
 
 import * as serviceWorker from './serviceWorker';
-
 ReactDOM.render(
-    
+    <Provider store = {createStore(
+        locationReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    )}>
     <BrowserRouter>
         <App>
             <Switch>
                 <Route exact path = "/home" component = {Home}/>
                 <Route exact path = "/restaurants" component = {Restaurants}/>
                 <Route path = "/restaurants/:pageNumber" component = {Restaurants}/>
-            
             </Switch>
         </App>
     </BrowserRouter>
+    </Provider>
     
     , document.getElementById('root'));
 

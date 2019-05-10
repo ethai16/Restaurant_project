@@ -82,9 +82,9 @@ class PaginationComp extends React.Component {
         for (let number = 1; number <= 4; number++) {
             let correctPageLoop = `/${this.props.view}/page=${number}`
             items.push(
-                <Pagination.Item href = {correctPageLoop} key={number} active={number === active} onClick = {this.makeActive.bind(this,number)}>
+                <Link to = {correctPageLoop} key={number} onClick = {this.makeActive.bind(this,number)}>
                     {number}
-                </Pagination.Item>
+                </Link>
             );
         }
 

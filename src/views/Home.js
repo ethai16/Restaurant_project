@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
+import {connect} from "react-redux";
 
 class Home extends React.Component {
     constructor(props) {
@@ -26,20 +27,45 @@ class Home extends React.Component {
           }else {
             console.log('Geolocation is not supported for this Browser/OS.');
         }
+        
+    }
+
+    handleCurrentLocation = () => {
+
     }
 
     render() {
+        console.log(this.props.location)
         return (
             <div>
-                <Link to = "/restaurants/page=1">Find Restaurant's Around Me</Link>
+                <Link to = "/restaurants/page=1" onClick = {()=>{this.props.onChangeLocation(this.state.currentLocation)}}>Find Restaurant's Around Me</Link>
             </div>
         );
     }
 }
 
+const mapStateToProps = (state) => {
+    return {
+        location: {
+            lat: state.location.lat,
+            lng: state.location.lng
+        }
+    }
+}
 
-Home.propTypes = {
-    
-};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onChangeLocation: (location) => dispatch({
+            type: 'changeLocation',
+            location: {
+                lat: location.lat,
+                lng: location.lng
+            }
+        })
+    }
+}
 
-export default Home
+
+var connectedComponent = connect(mapStateToProps,mapDispatchToProps)(Home)
+
+export default connectedComponent
