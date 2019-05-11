@@ -8,7 +8,8 @@ class PaginationComp extends React.Component {
         super(props);
 
         this.state = {
-            active: parseInt(window.location.pathname.slice(18,19))
+            active: parseInt(window.location.pathname.slice(18,19)),
+            checkLast: false
         }
     }
 
@@ -25,19 +26,29 @@ class PaginationComp extends React.Component {
     }
 
     goToNext = () => {
-        if(this.state.active <= Math.ceil(this.props.resultsFound/20)){
+        // if(this.state.active <= Math.ceil(this.props.resultsFound/20)){
+        //     this.setState({
+        //         active: (this.state.active + 1)
+        //     })
+        // }
+        if(this.state.active < 5){
             this.setState({
                 active: (this.state.active + 1)
+            })
+        }else{
+            this.setState({
+                checkLast: true
             })
         }
     }
 
     goBack = () => {
-        if (this.state.active > 1){
+        if (this.state.active > 5){
             this.setState({
                 active:(this.state.active - 1)
             })
         }
+        
     }
 
     makeActive(number){
@@ -50,12 +61,11 @@ class PaginationComp extends React.Component {
     render() {
         let active = this.state.active;
         let items = [];
-        let checkLast = false;
         let linkToFirst = `/${this.props.view}/page=1`
-        let linkToBack = `/${this.props.view}/page=${this.state.active}`
-        let linkToNext = `/${this.props.view}/page=${this.state.active}`
+        let linkToBack = `/${this.props.view}/page=${this.state.active-1}`
+        let linkToNext = `/${this.props.view}/page=${this.state.active+1}`
         // let linkToLast = `/${this.props.view}/page=${Math.ceil(this.props.resultsFound/20)}`
-        let linkToLast = `/${this.props.view}/page=4}`
+        let linkToLast = `/${this.props.view}/page=5}`
 
 
 
@@ -79,32 +89,25 @@ class PaginationComp extends React.Component {
         //     }
         // }
 
-        for (let number = 1; number <= 4; number++) {
+        for (let number = 1; number <= 5; number++) {
             let correctPageLoop = `/${this.props.view}/page=${number}`
             items.push(
-                <Link to = {correctPageLoop} key={number} onClick = {this.makeActive.bind(this,number)}>
+                <Link style = {styles.button} to = {correctPageLoop} key={number} onClick = {this.makeActive.bind(this,number)}>
                     {number}
                 </Link>
             );
         }
-
-        if(this.state.active === Math.ceil(this.props.resultsFound/20)){
-            checkLast = true
-        }
-
-
-        
 
         return (
 
             <div>
                 <Link to = '/home'>home</Link>
                 <Pagination>
-                    <Pagination.First href = {linkToFirst} onClick={this.goToFirst} />
-                    <Pagination.Prev href = {linkToBack} onClick={this.goBack} />
+                    <Link style = {styles.button} to = {linkToFirst} onClick={this.goToFirst}>{'<<'}</Link> 
+                    <Link style = {styles.button} to = {linkToBack} onClick={this.goBack}>{'<'}</Link> 
                     {items}
-                    <Pagination.Next href = {linkToNext} disabled={checkLast} onClick={this.goToNext} />
-                    <Pagination.Last href = {linkToLast} onClick={this.goToLast} />
+                    <Link style = {styles.button} to = {linkToNext} onClick={this.goToNext}>{'>'}</Link> 
+                    <Link style = {styles.button} to = {linkToLast} onClick={this.goToLast} >{'>>'}</Link> 
                 </Pagination>
                 <br />
             </div>
@@ -112,6 +115,19 @@ class PaginationComp extends React.Component {
     }
 }
 
+const styles = {
+    button: {
+        position: "relative",
+        display: "block",
+        padding: ".5rem .75rem",
+        marginLeft: "-1px",
+        lineHeight: "1.25",
+        color: "#007bff",
+        backgroundColor: "#fff",
+        border: "1px solid #dee2e6",
+        // pointerEvents: "none"
+    }
+}
 
 PaginationComp.propTypes = {
 
