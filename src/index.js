@@ -17,8 +17,7 @@ ReactDOM.render(
         <App>
             <Switch>
                 <Route exact path = "/home" component = {Home}/>
-                <Route exact path = "/restaurants" component = {Restaurants}/>
-                <Route path = "/restaurants/:pageNumber" component = {Restaurants}/>
+                <Route path = "/restaurants" component = {Restaurants}/>
             </Switch>
         </App>
     </BrowserRouter>

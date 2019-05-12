@@ -15,7 +15,8 @@ class Restaurants extends React.Component {
             restaurants:[],
             resultsFound: 0,
             view: 'restaurants',
-            currentPage: 1
+            currentPage: 1,
+            active: 1
         }
         
     }
@@ -29,7 +30,7 @@ class Restaurants extends React.Component {
                     console.log(result)
                     this.setState({
                         isLoaded: true,
-                        // restaurants: result.restaurants,
+                        restaurants: result.restaurants,
                         resultsFound: result.results_found
                     })
                 },
@@ -42,18 +43,44 @@ class Restaurants extends React.Component {
             )
     }
 
-    componentDidUpdate(prevProps) {
-        if (this.props.match.params.pageNumber !== prevProps.match.params.pageNumber) {
+    // componentDidUpdate(prevProps) {
+    //     if (this.props.match.params.pageNumber !== prevProps.match.params.pageNumber) {
+    //         const config = { headers: {'user-key': 'd31eef6b1b9da6a1f098bba682d68f76'} }; 
+    //         fetch(`https://developers.zomato.com/api/v2.1/search?start=${(parseInt(window.location.pathname.slice(18,19))-1)*20}&count=20&sort=real_distance&order=desc&lat=${this.props.location.lat}&lon=${this.props.location.lng}`, config)
+    //         .then(res => res.json())
+    //         .then(
+    //             (result)=>{
+    //                 this.setState({
+    //                     isLoaded: true,
+    //                     restaurants: result.restaurants,
+    //                     resultsFound: result.results_found
+    //                 })
+    //             },
+    //             (error) =>{
+    //                 this.setState({
+    //                     isLoaded:true,
+    //                     error
+    //                 })
+    //             }
+    //         )
+    //         window.scrollTo(0, 0)
+    //     }
+    //   }
+    
+    getData = (pageNumber) => {
+            console.log(pageNumber)
             const config = { headers: {'user-key': 'd31eef6b1b9da6a1f098bba682d68f76'} }; 
-            fetch(`https://developers.zomato.com/api/v2.1/search?start=${(parseInt(window.location.pathname.slice(18,19))-1)*20}&count=20&sort=real_distance&order=desc&lat=${this.props.location.lat}&lon=${this.props.location.lng}`, config)
+            fetch(`https://developers.zomato.com/api/v2.1/search?start=${(pageNumber-1)*20}&count=20&sort=real_distance&order=desc&lat=${this.props.location.lat}&lon=${this.props.location.lng}`, config)
             .then(res => res.json())
             .then(
                 (result)=>{
                     this.setState({
                         isLoaded: true,
-                        // restaurants: result.restaurants,
-                        resultsFound: result.results_found
+                        restaurants: result.restaurants,
+                        resultsFound: result.results_found,
+                        active: pageNumber
                     })
+                    console.log(this.state.active)
                 },
                 (error) =>{
                     this.setState({
@@ -63,19 +90,18 @@ class Restaurants extends React.Component {
                 }
             )
             window.scrollTo(0, 0)
-        }
-      }
-          
+    }
 
 
     render() {
         var restaurant = this.state.restaurants.map((entry,index) =>{
             return <Restaurant key ={index} data={entry.restaurant}/>
         })
+
         return (
             <div>
                 {restaurant}
-                <PaginationComp view = {this.state.view} resultsFound = {this.state.resultsFound} />
+                <PaginationComp active = {this.state.active} getData = {this.getData} view = {this.state.view} resultsFound = {this.state.resultsFound} />
             </div>
         );
     }

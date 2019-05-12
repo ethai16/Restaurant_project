@@ -38,7 +38,7 @@ class Home extends React.Component {
         console.log(this.props.location)
         return (
             <div>
-                <Link to = "/restaurants/page=1" onClick = {()=>{this.props.onChangeLocation(this.state.currentLocation)}}>Find Restaurant's Around Me</Link>
+                <Link to = "/restaurants" onClick = {()=>{this.props.onChangeLocation(this.state.currentLocation)}}>Find Restaurant's Around Me</Link>
             </div>
         );
     }

@@ -8,7 +8,7 @@ class PaginationComp extends React.Component {
         super(props);
 
         this.state = {
-            active: parseInt(window.location.pathname.slice(18,19)),
+            active: 1,
             checkLast: false
         }
     }
@@ -51,15 +51,9 @@ class PaginationComp extends React.Component {
         
     }
 
-    makeActive(number){
-        this.setState({
-            active: number
-        })
-        console.log(this.state.active)
-    }
 
     render() {
-        let active = this.state.active;
+        let active = this.props.active;
         let items = [];
         let linkToFirst = `/${this.props.view}/page=1`
         let linkToBack = `/${this.props.view}/page=${this.state.active-1}`
@@ -90,11 +84,10 @@ class PaginationComp extends React.Component {
         // }
 
         for (let number = 1; number <= 5; number++) {
-            let correctPageLoop = `/${this.props.view}/page=${number}`
             items.push(
-                <Link style = {styles.button} to = {correctPageLoop} key={number} onClick = {this.makeActive.bind(this,number)}>
+                <Pagination.Item key={number} active={number === active} onClick = {()=>{this.props.getData(number)}}>
                     {number}
-                </Link>
+                </Pagination.Item>
             );
         }
 
