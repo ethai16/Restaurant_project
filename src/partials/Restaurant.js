@@ -1,5 +1,7 @@
 import React from 'react';
+import {Card} from 'react-bootstrap'
 import PropTypes from 'prop-types';
+
 
 class Restaurant extends React.Component {
     constructor(props) {
@@ -14,10 +16,10 @@ class Restaurant extends React.Component {
         }
 
         return (
-            <div>
-                    <div>{this.props.data.name}</div>
+            <Card>
+                    <div>{this.props.data.name}:{this.props.data.cuisines}</div>
                     <img src={img} alt="no_photo"></img>
-            </div>
+            </Card>
         );
     }
 }
