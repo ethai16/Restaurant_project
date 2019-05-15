@@ -23,7 +23,7 @@ class Restaurants extends React.Component {
 
     componentDidMount = () =>{
             const config = { headers: {'user-key': 'd31eef6b1b9da6a1f098bba682d68f76'} }; 
-            fetch(`https://developers.zomato.com/api/v2.1/search?start=${0}&count=20&sort=real_distance&order=desc&lat=${this.props.location.lat}&lon=${this.props.location.lng}`, config)
+            fetch(`https://developers.zomato.com/api/v2.1/search?start=${0}&count=20&sort=real_distance&order=desc&lat=29.7098903&lon=-95.62291259999999`, config)
             .then(res => res.json())
             .then(
                 (result)=>{
@@ -70,7 +70,7 @@ class Restaurants extends React.Component {
     getData = (pageNumber) => {
             console.log(pageNumber)
             const config = { headers: {'user-key': 'd31eef6b1b9da6a1f098bba682d68f76'} }; 
-            fetch(`https://developers.zomato.com/api/v2.1/search?start=${(pageNumber-1)*20}&count=20&sort=real_distance&order=desc&lat=${this.props.location.lat}&lon=${this.props.location.lng}`, config)
+            fetch(`https://developers.zomato.com/api/v2.1/search?start=${(pageNumber-1)*20}&count=20&sort=real_distance&order=desc&lat=29.7098903&lon=-95.62291259999999`, config)
             .then(res => res.json())
             .then(
                 (result)=>{

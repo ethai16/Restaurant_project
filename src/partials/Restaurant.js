@@ -15,10 +15,17 @@ class Restaurant extends React.Component {
             img = this.props.data.featured_image
         }
 
+
+
         return (
-            <Card>
-                    <div>{this.props.data.name}:{this.props.data.cuisines}</div>
-                    <img src={img} alt="no_photo"></img>
+            <Card style = {{margin:'5vw'}}>  
+                    <Card.Body>
+                        <div style = {{fontWeight:'bold', color: 'red', fontSize:'2em'}}>{this.props.data.name}:</div>
+                        <div>{this.props.data.cuisines}</div>
+                    </Card.Body>
+                    <Card.Body>
+                        <div style = {{width:'30vw', height:'20vw', display: 'inline-block', backgroundImage: `url(${img})`, backgroundSize:'cover'}}></div>
+                    </Card.Body>
             </Card>
         );
     }
