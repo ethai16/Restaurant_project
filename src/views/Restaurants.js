@@ -42,30 +42,6 @@ class Restaurants extends React.Component {
                 }
             )
     }
-
-    // componentDidUpdate(prevProps) {
-    //     if (this.props.match.params.pageNumber !== prevProps.match.params.pageNumber) {
-    //         const config = { headers: {'user-key': 'd31eef6b1b9da6a1f098bba682d68f76'} }; 
-    //         fetch(`https://developers.zomato.com/api/v2.1/search?start=${(parseInt(window.location.pathname.slice(18,19))-1)*20}&count=20&sort=real_distance&order=desc&lat=${this.props.location.lat}&lon=${this.props.location.lng}`, config)
-    //         .then(res => res.json())
-    //         .then(
-    //             (result)=>{
-    //                 this.setState({
-    //                     isLoaded: true,
-    //                     restaurants: result.restaurants,
-    //                     resultsFound: result.results_found
-    //                 })
-    //             },
-    //             (error) =>{
-    //                 this.setState({
-    //                     isLoaded:true,
-    //                     error
-    //                 })
-    //             }
-    //         )
-    //         window.scrollTo(0, 0)
-    //     }
-    //   }
     
     getData = (pageNumber) => {
             console.log(pageNumber)
